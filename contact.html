@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Contact — Devon Welling</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="page">
+  <header class="site-header">
+    <div class="container header-grid">
+      <a class="logo" href="index.html"><img src="assets/logo.svg" alt="Devon Welling"></a>
+      <nav class="main-nav">
+        <a href="index.html">Accueil</a>
+        <a href="about.html">Équipe</a>
+        <a href="rules.html">Règles</a>
+        <a href="contact.html" class="cta">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <h1>Contact</h1>
+    <p>Pour nous rejoindre : Discord, mail ou formulaire.</p>
+
+    <div class="contact-grid">
+      <div class="card">
+        <h2>Formulaire</h2>
+        <!-- Remplace ACTION par l'URL Formspree ou un endpoint back -->
+        <form action="https://formspree.io/f/your-id" method="POST" class="contact-form">
+          <label>Nom / RP
+            <input type="text" name="name" required>
+          </label>
+          <label>Message
+            <textarea name="message" rows="5" required></textarea>
+          </label>
+          <label>Email (optionnel)
+            <input type="email" name="_replyto">
+          </label>
+          <button class="btn primary" type="submit">Envoyer</button>
+        </form>
+      </div>
+
+      <aside class="card">
+        <h2>Direct</h2>
+        <p>Email : <a href="mailto:contact@devonwelling.rp">contact@devonwelling.rp</a></p>
+        <p>Discord : <strong>discord.gg/tonlien</strong></p>
+        <p>Ou contacte un membre de l'équipe en jeu.</p>
+      </aside>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div><strong>Devon Welling</strong></div>
+      <div><a href="index.html">Accueil</a></div>
+    </div>
+  </footer>
+</body>
+</html>

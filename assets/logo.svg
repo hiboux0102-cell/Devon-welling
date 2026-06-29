@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="240" height="64" viewBox="0 0 240 64" fill="none">
+  <rect width="240" height="64" rx="6" fill="#071018"/>
+  <rect x="8" y="8" width="56" height="48" rx="4" fill="#e0b24d"/>
+  <text x="76" y="36" font-family="Cinzel, Inter, Arial, sans-serif" font-size="22" font-weight="700" fill="#ffd86b">DEVON</text>
+  <text x="76" y="52" font-family="Inter, Arial, sans-serif" font-size="12" fill="#cfc3a1">WELLING</text>
+</svg>
