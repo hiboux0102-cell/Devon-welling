@@ -4,6 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Contact — Devon Welling</title>
+  <meta name="description" content="Contactez le cabinet Devon Welling pour un rendez-vous ou une première consultation." />
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/styles.css">
 </head>
@@ -14,7 +15,7 @@
       <nav class="main-nav">
         <a href="index.html">Accueil</a>
         <a href="about.html">Équipe</a>
-        <a href="rules.html">Règles</a>
+        <a href="rules.html">Domaines</a>
         <a href="contact.html" class="cta">Contact</a>
       </nav>
     </div>
@@ -22,31 +23,34 @@
 
   <main class="container">
     <h1>Contact</h1>
-    <p>Pour nous rejoindre : Discord, mail ou formulaire.</p>
+    <p>Pour prendre rendez-vous ou obtenir un premier avis, contactez-nous par email, téléphone ou via le formulaire ci-dessous.</p>
 
     <div class="contact-grid">
       <div class="card">
-        <h2>Formulaire</h2>
+        <h2>Formulaire de contact</h2>
         <!-- Remplace ACTION par l'URL Formspree ou un endpoint back -->
         <form action="https://formspree.io/f/your-id" method="POST" class="contact-form">
-          <label>Nom / RP
+          <label>Nom
             <input type="text" name="name" required>
+          </label>
+          <label>Objet
+            <input type="text" name="subject">
           </label>
           <label>Message
             <textarea name="message" rows="5" required></textarea>
           </label>
-          <label>Email (optionnel)
-            <input type="email" name="_replyto">
+          <label>Email
+            <input type="email" name="_replyto" required>
           </label>
           <button class="btn primary" type="submit">Envoyer</button>
         </form>
       </div>
 
       <aside class="card">
-        <h2>Direct</h2>
-        <p>Email : <a href="mailto:contact@devonwelling.rp">contact@devonwelling.rp</a></p>
-        <p>Discord : <strong>discord.gg/tonlien</strong></p>
-        <p>Ou contacte un membre de l'équipe en jeu.</p>
+        <h2>Coordonnées</h2>
+        <p>Email : <a href="mailto:contact@devonwelling.com">contact@devonwelling.com</a></p>
+        <p>Téléphone : <strong>+33 1 23 45 67 89</strong> (exemple)</p>
+        <p>Adresse : <em>Adresse du cabinet (à renseigner)</em></p>
       </aside>
     </div>
   </main>
