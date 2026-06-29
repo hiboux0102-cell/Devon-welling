@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Contact — Devon Welling</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-grid">
+      <a class="logo" href="index.html"><img src="assets/logo.svg" alt="Devon Welling"></a>
+      <nav class="main-nav">
+        <a href="index.html">Accueil</a>
+        <a href="about.html">Équipe</a>
+        <a href="rules.html">Domaines</a>
+        <a href="contact.html" class="cta">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <h1>Contact</h1>
+    <p>Pour prendre rendez-vous ou obtenir un premier avis, contactez-nous par email, téléphone ou via le formulaire ci-dessous.</p>
+
+    <div class="contact-grid">
+      <div class="card">
+        <h2>Formulaire de contact</h2>
+        <form id="contact-form" class="contact-form">
+          <label>Nom
+            <input type="text" id="name" name="name" required>
+          </label>
+          <label>Objet
+            <input type="text" id="subject" name="subject">
+          </label>
+          <label>Message
+            <textarea id="message" name="message" rows="5" required></textarea>
+          </label>
+          <label>Email
+            <input type="email" id="email" name="_replyto" required>
+          </label>
+          <button class="btn primary" type="submit">Envoyer</button>
+        </form>
+        <div id="contact-result" style="margin-top:12px;color:var(--muted)"></div>
+      </div>
+
+      <aside class="card">
+        <h2>Coordonnées</h2>
+        <p>Email : <a href="mailto:contact@devonwelling.com">contact@devonwelling.com</a></p>
+        <p>Téléphone : <strong>+33 1 23 45 67 89</strong> (exemple)</p>
+        <p>Adresse : <em>Adresse du cabinet (à renseigner)</em></p>
+      </aside>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div><strong>Devon Welling</strong></div>
+      <div><a href="index.html">Accueil</a></div>
+    </div>
+  </footer>
+
+  <script>
+  document.getElementById('contact-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const payload = {
+      name: document.getElementById('name').value,
+      email: document.getElementById('email').value,
+      subject: document.getElementById('subject').value,
+      message: document.getElementById('message').value
+    };
+    const res = await fetch('/api/contact', {
+      method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(payload)
+    });
+    const data = await res.json();
+    const out = document.getElementById('contact-result');
+    if(res.ok){
+      out.innerHTML = `Merci — conversation créée. Lien privé : <a href="${data.link}">${data.link}</a>`;
+      document.getElementById('contact-form').reset();
+    } else {
+      out.textContent = data.error || 'Erreur';
+    }
+  });
+  </script>
+</body>
+</html>

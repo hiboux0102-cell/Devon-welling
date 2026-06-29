@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Conversation — Devon Welling</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-grid">
+      <a class="logo" href="index.html"><img src="assets/logo.svg" alt="Devon Welling"></a>
+    </div>
+  </header>
+
+  <main class="container">
+    <h1>Conversation</h1>
+    <div id="conv-info" class="card"></div>
+    <div id="messages" class="card" style="min-height:200px; max-height:60vh; overflow:auto; margin-top:12px;"></div>
+
+    <form id="msg-form" class="card" style="display:flex; gap:8px; margin-top:12px;">
+      <input id="msg-input" placeholder="Votre message..." style="flex:1; padding:10px;">
+      <button type="submit" class="btn primary">Envoyer</button>
+    </form>
+  </main>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    (async function(){
+      const params = new URLSearchParams(location.search);
+      const id = params.get('id');
+      const token = params.get('token');
+      if (!id || !token) {
+        document.getElementById('conv-info').innerText = 'Lien invalide.';
+        document.getElementById('msg-form').style.display = 'none';
+        return;
+      }
+      // verify via API
+      const v = await fetch(`/api/conversation/${id}?token=${encodeURIComponent(token)}`);
+      if(!v.ok){ document.getElementById('conv-info').innerText = 'Conversation introuvable ou token invalide.'; document.getElementById('msg-form').style.display='none'; return; }
+      const data = await v.json();
+      const conv = data.conversation;
+      document.getElementById('conv-info').innerHTML = `<strong>${conv.subject || 'Message'}</strong><div class="small muted">De: ${conv.name} — ${conv.email}</div>`;
+
+      const socket = io({ query: { convId: id, token } });
+      const messagesEl = document.getElementById('messages');
+
+      function renderMsg(m, conv){
+        const el = document.createElement('div');
+        el.style.marginBottom = '8px';
+        el.innerHTML = `<div style="font-size:13px;color:#cfcfcf"><strong>${m.sender === 'owner' ? 'Réponse (Cabinet)' : conv.name}</strong> <span style="font-size:12px;color:#9aa4b2">• ${new Date(m.createdAt).toLocaleString()}</span></div>
+                        <div style="padding:8px;background:rgba(255,255,255,0.02);border-radius:6px;margin-top:4px">${m.text}</div>`;
+        messagesEl.appendChild(el);
+      }
+
+      // load existing
+      data.messages.forEach(m => renderMsg(m, conv));
+      messagesEl.scrollTop = messagesEl.scrollHeight;
+
+      socket.on('message', (m) => { renderMsg(m, conv); messagesEl.scrollTop = messagesEl.scrollHeight; });
+
+      document.getElementById('msg-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const text = document.getElementById('msg-input').value.trim();
+        if(!text) return;
+        // send via socket
+        socket.emit('sendMessage', { convId: id, sender: 'user', text, token });
+        document.getElementById('msg-input').value = '';
+      });
+    })();
+  </script>
+</body>
+</html>
