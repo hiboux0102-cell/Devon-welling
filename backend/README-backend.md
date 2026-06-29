@@ -1,18 +1,11 @@
-# Backend for Devon Welling site
+# Backend removed contact system
 
-This backend provides a minimal self-hosted contact + chat system using Express, Socket.IO and SQLite.
+Le backend a été réduit au strict minimum : il sert maintenant uniquement les fichiers statiques dans `backend/public`.
 
-How to run
-1. Install dependencies: npm install
-2. Create data directory: mkdir data
-3. Set environment variables:
-   - ADMIN_PASSWORD (your admin password)
-   - SESSION_SECRET (session secret)
-   - PORT (optional, default 3000)
-4. Start: npm start
+Les fonctionnalités de contact, chat et administration ont été désactivées sur demande. Si tu souhaites les réactiver à l'avenir, je peux réimplémenter un système adapté.
 
-The server serves files from the backend/public directory. You can replace those files with the site pages or adapt the paths.
+Pour le moment :
+- La page `/contact.html` affiche une fiche de contact statique.
+- Les anciennes pages `/chat.html` et `/admin.html` indiquent que la fonctionnalité est désactivée.
 
-Security notes
-- Use HTTPS in production and set cookie `secure: true` in server.js.
-- Keep ADMIN_PASSWORD and SESSION_SECRET secret (do not commit them).
+Si tu veux que je supprime complètement le dossier `backend/`, dis-le et je le supprimerai du dépôt.

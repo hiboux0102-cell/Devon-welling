@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Admin — Conversations</title>
+  <title>Administration — Désactivée</title>
   <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
@@ -14,83 +14,10 @@
   </header>
 
   <main class="container">
-    <h1>Admin — Conversations</h1>
-
-    <div id="login" class="card">
-      <h2>Connexion</h2>
-      <input id="password" type="password" placeholder="Mot de passe admin" style="width:100%;padding:8px;margin-bottom:8px;">
-      <button id="login-btn" class="btn primary">Se connecter</button>
-      <div id="login-result" style="margin-top:8px;color:var(--muted)"></div>
-    </div>
-
-    <div id="admin-area" style="display:none">
-      <div class="card" id="conv-list" style="max-height:60vh;overflow:auto"></div>
-      <div class="card" id="conv-view" style="margin-top:12px; display:none">
-        <h3 id="conv-subject"></h3>
-        <div id="conv-messages" style="min-height:200px; max-height:50vh; overflow:auto"></div>
-        <form id="reply-form" style="display:flex; gap:8px; margin-top:12px;">
-          <input id="reply-input" style="flex:1;padding:8px" placeholder="Répondre...">
-          <button type="submit" class="btn primary">Envoyer</button>
-        </form>
-      </div>
+    <h1>Administration — Désactivée</h1>
+    <div class="card">
+      <p>Le panneau d'administration et le système de conversation ont été désactivés. Les demandes se font désormais via la page <a href="/contact.html">Contact</a>.</p>
     </div>
   </main>
-
-  <script src="/socket.io/socket.io.js"></script>
-  <script>
-    let selectedConv = null;
-    document.getElementById('login-btn').addEventListener('click', async () => {
-      const pwd = document.getElementById('password').value;
-      const r = await fetch('/admin/login', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ password: pwd }) });
-      const j = await r.json();
-      if(r.ok){ document.getElementById('login').style.display='none'; document.getElementById('admin-area').style.display='block'; loadConversations(); }
-      else document.getElementById('login-result').textContent = j.error || 'Erreur';
-    });
-
-    async function loadConversations(){
-      const r = await fetch('/admin/conversations');
-      if(!r.ok){ alert('Auth required'); return; }
-      const j = await r.json();
-      const list = document.getElementById('conv-list'); list.innerHTML = '';
-      j.conversations.forEach(c => {
-        const el = document.createElement('div');
-        el.style.padding = '10px'; el.style.borderBottom = '1px solid rgba(255,255,255,0.04)';
-        el.innerHTML = `<strong>${c.subject || 'Sans objet'}</strong><div class="small muted">${c.name} — ${c.email}</div>`;
-        el.addEventListener('click', () => openConversation(c.id));
-        list.appendChild(el);
-      });
-    }
-
-    async function openConversation(id){
-      selectedConv = id;
-      document.getElementById('conv-view').style.display = 'block';
-      const r = await fetch(`/admin/conversations/${id}/messages`);
-      const j = await r.json();
-      document.getElementById('conv-subject').textContent = j.conversation.subject || 'Conversation';
-      const msgs = document.getElementById('conv-messages'); msgs.innerHTML = '';
-      j.messages.forEach(m => {
-        const el = document.createElement('div'); el.style.marginBottom='8px';
-        el.innerHTML = `<div style="font-size:13px;color:#cfcfcf"><strong>${m.sender==='owner'?'Vous':m.sender}</strong> <span style="font-size:12px;color:#9aa4b2">• ${new Date(m.createdAt).toLocaleString()}</span></div><div style="padding:8px;background:rgba(255,255,255,0.02);border-radius:6px;margin-top:4px">${m.text}</div>`;
-        msgs.appendChild(el);
-      });
-      msgs.scrollTop = msgs.scrollHeight;
-
-      // connect socket as admin
-      if(window.adminSocket) window.adminSocket.disconnect();
-      window.adminSocket = io({ query: { convId: id, admin: '1' } });
-      window.adminSocket.on('message', m => {
-        if(m.convId === selectedConv){ const msgs = document.getElementById('conv-messages'); const el = document.createElement('div'); el.style.marginBottom='8px'; el.innerHTML = `<div style="font-size:13px;color:#cfcfcf"><strong>${m.sender==='owner'?'Vous':m.sender}</strong> <span style="font-size:12px;color:#9aa4b2">• ${new Date(m.createdAt).toLocaleString()}</span></div><div style="padding:8px;background:rgba(255,255,255,0.02);border-radius:6px;margin-top:4px">${m.text}</div>`; msgs.appendChild(el); msgs.scrollTop = msgs.scrollHeight; }
-      });
-    }
-
-    document.getElementById('reply-form').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const text = document.getElementById('reply-input').value.trim();
-      if(!text || !selectedConv) return;
-      // send via API (admin session)
-      await fetch(`/api/conversation/${selectedConv}/message`, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ sender: 'owner', text }) });
-      document.getElementById('reply-input').value = '';
-    });
-  </script>
 </body>
 </html>
